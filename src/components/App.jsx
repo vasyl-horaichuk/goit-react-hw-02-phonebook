@@ -14,5 +14,3 @@ export const App = () => {
     </div>
   );
 };
-
-console.log('1131');
