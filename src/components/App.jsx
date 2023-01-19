@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactFrom';
 import { ContactList } from './ContactList/ContactList';
-// import { Filter } from './Filter/Filter';
+import { Filter } from './Filter/Filter';
 import { Title } from './Title/Title';
 import { nanoid } from 'nanoid';
 
@@ -30,14 +30,37 @@ export class App extends Component {
     }));
   };
 
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
+  changeFilterInput = e => {
+    this.setState({ filter: e.target.value });
+  };
+
+  findContacts = () => {
+    const { filter, contacts } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   render() {
     return (
       <div>
         <Title title="Phonebook" />
         <ContactForm onSubmit={this.addContact} />
         <Title title="Contacts" />
-        <ContactList items={this.state.contacts} />
-        {/* <Filter /> */}
+        <ContactList
+          items={this.state.contacts}
+          onDelete={this.deleteContact}
+        />
+        <Filter
+          filter={this.state.filter}
+          changeFilterInput={this.changeFilterInput}
+        />
       </div>
     );
   }
