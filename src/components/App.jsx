@@ -17,17 +17,21 @@ export class App extends Component {
   };
 
   addContact = ({ name, number }) => {
-    console.log(name, number);
-    this.setState(prevState => ({
-      contacts: [
-        ...prevState.contacts,
-        {
-          id: nanoid(),
-          name,
-          number,
-        },
-      ],
-    }));
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    this.state.contacts.some(
+      i =>
+        (i.name.toLowerCase() === contact.name.toLowerCase() &&
+          i.number === contact.number) ||
+        i.number === contact.number
+    )
+      ? alert(`${name} is already in contacts`)
+      : this.setState(({ contacts }) => ({
+          contacts: [contact, ...contacts],
+        }));
   };
 
   deleteContact = id => {
@@ -54,7 +58,7 @@ export class App extends Component {
         <ContactForm onSubmit={this.addContact} />
         <Title title="Contacts" />
         <ContactList
-          items={this.state.contacts}
+          items={this.findContacts()}
           onDelete={this.deleteContact}
         />
         <Filter
