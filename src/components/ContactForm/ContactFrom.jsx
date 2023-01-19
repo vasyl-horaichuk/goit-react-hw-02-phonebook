@@ -8,19 +8,17 @@ export class ContactForm extends Component {
   };
 
   handleChange = evt => {
-    const { name, value } = evt.target;
+    const { name, value } = evt.currentTarget;
     this.setState({ [name]: value });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
-    const { name, number } = this.state;
     this.props.onSubmit(this.state);
     this.setState({
       name: '',
       number: '',
     });
-    console.log(`Name: ${name}, Number: ${number}`);
   };
 
   render() {
